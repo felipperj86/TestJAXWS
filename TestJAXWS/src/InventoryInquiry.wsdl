@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" 
+xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" 
+xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" 
+xmlns:tns="http://www.somecompany.com/" 
+xmlns:s="http://www.w3.org/2001/XMLSchema" 
+xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" 
+targetNamespace="http://www.somecompany.com/" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.somecompany.com/">
+    <s:import namespace="http://www.w3.org/2001/XMLSchema" schemaLocation="http://www.w3.org/2001/XMLSchema.xsd" />
+      <s:element name="getInventoryStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DealerCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SupplierCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PartNumber" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Quantity" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="DeliveryLocation" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getInventoryStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getInventoryStatusResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="getInventoryStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:getInventoryStatus" />
+  </wsdl:message>
+  <wsdl:message name="getInventoryStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:getInventoryStatusResponse" />
+  </wsdl:message>
+  <wsdl:portType name="InventoryInquirySoap">
+    <wsdl:operation name="getInventoryStatus">
+      <wsdl:input message="tns:getInventoryStatusSoapIn" />
+      <wsdl:output message="tns:getInventoryStatusSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="InventoryInquirySoap" type="tns:InventoryInquirySoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getInventoryStatus">
+      <soap:operation soapAction="http://www.somecompany.com/getInventoryStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="InventoryInquiry">
+    <wsdl:port name="InventoryInquirySoap" binding="tns:InventoryInquirySoap">
+      <soap:address location="http://www.somecompany.com/InventoryInquiry.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
